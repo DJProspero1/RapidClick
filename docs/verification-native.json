@@ -1,0 +1,113 @@
+{
+  "timestampUtc": "2026-10-23T13:02:13.0993467Z",
+  "os": "Microsoft Windows NT 10.0.26200.0",
+  "runtime": "10.0.13",
+  "failures": 0,
+  "results": [
+    {
+      "test": "reject invalid settings",
+      "passed": true
+    },
+    {
+      "test": "exact finite count and restart",
+      "passed": true
+    },
+    {
+      "test": "cancel countdown without clicks",
+      "passed": true
+    },
+    {
+      "test": "physical emergency stop and hold release",
+      "passed": true
+    },
+    {
+      "test": "overlapping starts and injection failure",
+      "passed": true
+    },
+    {
+      "benchmark": true,
+      "requestedRate": 100,
+      "emitted": 200,
+      "received": 200,
+      "elapsedSeconds": 1.9907937,
+      "achievedRate": 100.5,
+      "cpuMilliseconds": 2140.6
+    },
+    {
+      "test": "native delivery at 100/s",
+      "passed": true
+    },
+    {
+      "benchmark": true,
+      "requestedRate": 1000,
+      "emitted": 2000,
+      "received": 2000,
+      "elapsedSeconds": 1.999385,
+      "achievedRate": 1000.3,
+      "cpuMilliseconds": 1718.8
+    },
+    {
+      "test": "native delivery at 1000/s",
+      "passed": true
+    },
+    {
+      "benchmark": true,
+      "requestedRate": 2500,
+      "emitted": 3000,
+      "received": 3000,
+      "elapsedSeconds": 1.4304194,
+      "achievedRate": 2097.3,
+      "cpuMilliseconds": 765.6
+    },
+    {
+      "test": "native delivery at 2500/s",
+      "passed": true
+    },
+    {
+      "benchmark": true,
+      "requestedRate": 5000,
+      "emitted": 3000,
+      "received": 3000,
+      "elapsedSeconds": 1.4426938,
+      "achievedRate": 2079.4,
+      "cpuMilliseconds": 765.6
+    },
+    {
+      "test": "native delivery at 5000/s",
+      "passed": true
+    },
+    {
+      "benchmark": true,
+      "requestedRate": 10000,
+      "emitted": 3000,
+      "received": 3000,
+      "elapsedSeconds": 1.4196724,
+      "achievedRate": 2113.2,
+      "cpuMilliseconds": 609.4
+    },
+    {
+      "test": "native delivery at 10000/s",
+      "passed": true
+    },
+    {
+      "test": "native Right double-click pairs",
+      "passed": true
+    },
+    {
+      "test": "native Middle double-click pairs",
+      "passed": true
+    },
+    {
+      "test": "native Left double-click pairs",
+      "passed": true
+    },
+    {
+      "nativeStopMilliseconds": 9.95,
+      "noClicksAfterDrain": true
+    },
+    {
+      "test": "native stop while running at maximum requested rate",
+      "passed": true
+    }
+  ]
+}

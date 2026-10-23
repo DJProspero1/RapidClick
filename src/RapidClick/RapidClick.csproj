@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\RapidClick.ico</ApplicationIcon>
+    <AssemblyName>RapidClick</AssemblyName>
+    <Product>RapidClick</Product>
+    <Description>Fast, precise Windows auto clicker</Description>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../RapidClick.Core/RapidClick.Core.csproj" /></ItemGroup>
+  <ItemGroup><Resource Include="Assets\RapidClick.ico" /></ItemGroup>
+</Project>

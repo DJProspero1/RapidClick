@@ -1,0 +1,28 @@
+{
+  "timestampUtc": "2026-10-23T13:02:52.0024995Z",
+  "os": "Microsoft Windows NT 10.0.26200.0",
+  "runtime": "10.0.13",
+  "failures": 0,
+  "results": [
+    {
+      "test": "reject invalid settings",
+      "passed": true
+    },
+    {
+      "test": "exact finite count and restart",
+      "passed": true
+    },
+    {
+      "test": "cancel countdown without clicks",
+      "passed": true
+    },
+    {
+      "test": "physical emergency stop and hold release",
+      "passed": true
+    },
+    {
+      "test": "overlapping starts and injection failure",
+      "passed": true
+    }
+  ]
+}

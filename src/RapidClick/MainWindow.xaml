@@ -1,0 +1,66 @@
+<Window x:Class="RapidClick.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RapidClick" Width="720" Height="920" MinWidth="580" MinHeight="600" Style="{StaticResource {x:Type Window}}" WindowStartupLocation="CenterScreen" Icon="Assets/RapidClick.ico">
+  <Grid Background="{StaticResource BackgroundBrush}">
+    <Grid.RowDefinitions><RowDefinition /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+  <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="24,20,24,0">
+    <StackPanel>
+      <Grid Margin="0,0,0,16"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal"><Border Background="#4A4458" CornerRadius="12" Width="44" Height="44" Margin="0,0,13,0"><Path Data="M 12,8 L 12,31 L 18,25 L 23,35 L 28,32 L 23,23 L 32,22 Z" Fill="{StaticResource AccentBrush}" Stretch="Uniform" Margin="11,8" /></Border><StackPanel><TextBlock Text="RapidClick" FontSize="27" FontWeight="SemiBold" /><TextBlock Text="Your clicks. At your speed." Style="{StaticResource Caption}" /></StackPanel></StackPanel>
+        <Border Grid.Column="1" Background="{StaticResource FieldBrush}" CornerRadius="16" Padding="14,7" VerticalAlignment="Center"><TextBlock x:Name="StateLabel" Text="Ready" Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" /></Border>
+      </Grid>
+
+      <Border Background="{StaticResource SurfaceBrush}" CornerRadius="20" Padding="20" Margin="0,0,0,12">
+        <StackPanel x:Name="SpeedSettings">
+          <TextBlock Text="Repeat speed" FontSize="20" FontWeight="SemiBold" Margin="0,0,0,16" />
+          <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+            <TextBox x:Name="RateInput" Text="100" FontSize="38" FontWeight="SemiBold" Padding="16,7" TextChanged="RateChanged" AutomationProperties.Name="Repeats per second" />
+            <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center"><TextBlock Text="repeats / second" FontSize="16" /><TextBlock x:Name="IntervalLabel" Text="10 ms between repeats" Style="{StaticResource Caption}" Margin="0,4,0,0" /></StackPanel>
+          </Grid>
+          <UniformGrid Columns="4" Margin="0,12,0,10">
+            <Button Content="10" Tag="10" Click="PresetClick" Margin="0,0,8,0" AutomationProperties.Name="10 repeats per second" />
+            <Button Content="100" Tag="100" Click="PresetClick" Margin="0,0,8,0" AutomationProperties.Name="100 repeats per second" />
+            <Button Content="1,000" Tag="1000" Click="PresetClick" Margin="0,0,8,0" AutomationProperties.Name="1000 repeats per second" />
+            <Button Content="10,000" Tag="10000" Click="PresetClick" AutomationProperties.Name="10000 repeats per second" />
+          </UniformGrid>
+          <TextBlock Text="1–10,000 repeats/sec. Actual click delivery depends on the target app." Style="{StaticResource Caption}" />
+        </StackPanel>
+      </Border>
+
+      <StackPanel x:Name="BehaviorSettings">
+        <Grid Margin="0,0,0,14"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="16" /><ColumnDefinition /></Grid.ColumnDefinitions>
+          <StackPanel><Label Content="Mouse button" Target="{Binding ElementName=ButtonInput}" Style="{StaticResource FieldLabel}" /><ComboBox x:Name="ButtonInput" SelectedIndex="0" AutomationProperties.Name="Mouse button"><ComboBoxItem Content="Left button" /><ComboBoxItem Content="Right button" /><ComboBoxItem Content="Middle button" /></ComboBox></StackPanel>
+          <StackPanel Grid.Column="2"><Label Content="Click type" Target="{Binding ElementName=TypeInput}" Style="{StaticResource FieldLabel}" /><ComboBox x:Name="TypeInput" SelectedIndex="0" SelectionChanged="TypeChanged" AutomationProperties.Name="Click type"><ComboBoxItem Content="Single click" /><ComboBoxItem Content="Double click" /></ComboBox></StackPanel>
+        </Grid>
+        <Grid Margin="0,0,0,14"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="16" /><ColumnDefinition /></Grid.ColumnDefinitions>
+          <StackPanel><Label Content="Repeat count" Target="{Binding ElementName=LimitInput}" Style="{StaticResource FieldLabel}" /><TextBox x:Name="LimitInput" Text="0" AutomationProperties.Name="Repeat count, zero for unlimited" /><TextBlock Text="0 = until you stop" Style="{StaticResource Caption}" Margin="0,5,0,0" /></StackPanel>
+          <StackPanel Grid.Column="2"><Label Content="Start delay (seconds)" Target="{Binding ElementName=DelayInput}" Style="{StaticResource FieldLabel}" /><TextBox x:Name="DelayInput" Text="3" AutomationProperties.Name="Start delay in seconds" /><TextBlock Text="Time to move to your target" Style="{StaticResource Caption}" Margin="0,5,0,0" /></StackPanel>
+        </Grid>
+        <Grid Margin="0,0,0,8"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="16" /><ColumnDefinition /></Grid.ColumnDefinitions>
+          <StackPanel><Label Content="Activation" Target="{Binding ElementName=ModeInput}" Style="{StaticResource FieldLabel}" /><ComboBox x:Name="ModeInput" SelectedIndex="0" SelectionChanged="ModeChanged" AutomationProperties.Name="Activation mode"><ComboBoxItem Content="Press to start / stop" /><ComboBoxItem Content="Hold hotkey to click" /></ComboBox></StackPanel>
+          <StackPanel Grid.Column="2"><Label Content="Hotkey" Target="{Binding ElementName=HotkeyInput}" Style="{StaticResource FieldLabel}" /><ComboBox x:Name="HotkeyInput" SelectionChanged="HotkeyChanged" AutomationProperties.Name="Start stop hotkey" /></StackPanel>
+        </Grid>
+        <Grid><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+          <StackPanel><CheckBox x:Name="FixedInput" Content="Click a fixed position" Checked="PositionChanged" Unchecked="PositionChanged" /><TextBlock x:Name="PositionLabel" Text="Following your cursor" Style="{StaticResource Caption}" Margin="30,5,0,0" /></StackPanel>
+          <Button Grid.Column="1" x:Name="PickButton" Content="Pick position · F7" Click="PickClick" VerticalAlignment="Center" />
+        </Grid>
+      </StackPanel>
+
+    </StackPanel>
+  </ScrollViewer>
+  <Border Grid.Row="1" Background="{StaticResource BackgroundBrush}" Padding="24,10,24,18" BorderThickness="0,1,0,0" BorderBrush="{StaticResource OutlineBrush}">
+    <StackPanel>
+      <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition /><ColumnDefinition /></Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal"><TextBlock x:Name="CountLabel" Text="0" FontSize="18" FontWeight="SemiBold" /><TextBlock Text=" clicks sent" Style="{StaticResource Caption}" VerticalAlignment="Center" /></StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal"><TextBlock x:Name="SpeedLabel" Text="—" FontSize="18" FontWeight="SemiBold" /><TextBlock Text=" repeats/sec" Style="{StaticResource Caption}" VerticalAlignment="Center" /></StackPanel>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right"><TextBlock x:Name="TimeLabel" Text="0.0s" FontSize="18" FontWeight="SemiBold" /><TextBlock Text=" run time" Style="{StaticResource Caption}" VerticalAlignment="Center" /></StackPanel>
+      </Grid>
+      <TextBlock x:Name="MessageLabel" Text="F6 starts or stops. F8 always stops." TextWrapping="Wrap" Foreground="{StaticResource MutedBrush}" MinHeight="20" Margin="2,0,2,12" AutomationProperties.LiveSetting="Polite" />
+      <Button x:Name="StartButton" Content="Start clicking · F6" Style="{StaticResource PrimaryButton}" FontSize="17" MinHeight="52" Click="StartClick" />
+      <Grid Margin="0,16,0,0"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+        <TextBlock Text="F8 emergency stop   ·   Esc stops in this window" Style="{StaticResource Caption}" VerticalAlignment="Center" />
+        <Button x:Name="TestButton" Grid.Column="1" Content="Test speed" Click="TestClick" Padding="14,6" MinHeight="32" BorderThickness="0" Background="Transparent" />
+      </Grid>
+    </StackPanel>
+  </Border>
+  </Grid>
+</Window>

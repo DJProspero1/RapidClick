@@ -1,0 +1,1 @@
+{"passed":true,"hotkeysReady":true,"width":720,"height":920,"tests":["invalid input prevents start","options round-trip","hold mode activation","WM_HOTKEY toggle/stop routing","built-in test receives 2000 clicks","XAML render"]}
