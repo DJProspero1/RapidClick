@@ -14,7 +14,7 @@ RapidClick delivers fast, controllable mouse clicks. Success means the requested
 
 ## Brand Personality
 
-Clear, capable, familiar. The user specifically requested Google design throughout and dark mode. Follow Material-style hierarchy and familiar controls without implying Google affiliation.
+Bare-bones, immediate, quiet. The user explicitly rejected the large v1 interface and prioritized extreme performance over visual polish. Retain dark mode and familiar controls; remove panels, presets, repeated guidance, and configuration that obstructs clicking.
 
 ## Anti-references
 
@@ -23,10 +23,11 @@ Avoid flashy gaming decoration, crowded legacy utility forms, and light surfaces
 ## Design Principles
 
 - Make starting and stopping immediately understandable.
-- Keep the selected speed and mouse behavior visible together.
+- Keep only speed, mouse button, and start/stop visible together.
 - Show real operating state and actionable failures.
 - Prefer useful controls over decoration.
 - Preserve keyboard operation and sensible defaults.
+- Tests are silent: no beeps, sounds, dialogs, or clicks outside a dedicated guarded target.
 
 ## Accessibility & Inclusion
 

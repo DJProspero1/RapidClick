@@ -1,61 +1,52 @@
 # RapidClick
 
-A fast Windows auto-clicker with a dark, Material-inspired interface. Portable, offline, and built locally. No installer, account, ads, telemetry, or runtime installation.
+A tiny native Windows auto-clicker. Speed, mouse button, start/stop. No .NET, web runtime, animation, accounts, telemetry, or sounds.
 
-[Download the latest release](https://github.com/DJProspero1/RapidClick/releases/latest)
+[Download the Windows executable](https://github.com/DJProspero1/RapidClick/releases/latest)
 
-![RapidClick dark interface](docs/rapidclick.png)
+![RapidClick](docs/rapidclick.png)
 
 ## Use
 
-1. Download `RapidClick-1.0.0-win-x64.exe` from Releases and run it on Windows 10/11 x64.
-2. Choose a speed, mouse button, and single or double click. Speed is **repeats per second**; a double-click repeat sends two clicks.
-3. Press **F6** to start. The default three-second countdown gives you time to move the pointer to the target.
-4. Press **F6** again or **F8** to stop. **Esc** stops while the RapidClick window is focused.
+1. Enter clicks per second, from **1 to 10,000**.
+2. Choose **Direct to window (fast)** or **Standard input (compatibility)**.
+3. Point at the target and press **F6**. Press **F6** again or **F8** to stop.
 
-Select **Hold hotkey to click** to run only while your chosen key is down. Releasing it also cancels the countdown. The activation key can be changed to F1–F11, except F7/F8, which are reserved for position picking and stopping.
+The Start button gives you 0.7 seconds to point at the target. Direct mode keeps the selected window/control and client position, so you can move the pointer away afterwards. Standard mode follows your pointer. Clicking stops if the target disappears or stops answering.
 
-To use a fixed position, move your pointer over the target and press **F7**. Coordinates are physical desktop pixels and support multiple monitors, including displays with negative coordinates. A repeat count of **0** runs until stopped; other counts stop automatically. Settings persist in `%LOCALAPPDATA%\RapidClick\settings.json`.
+**Cell to Singularity:** when that game is the selected target, RapidClick switches to standard input and limits the rate to 50/sec. The installed game explicitly caps background taps at 50 per game-second; sending thousands adds work without increasing accepted taps. The change is shown in the speed field and status line. Rates below 50 are preserved. No game files or saves are changed. This profile is based on code inspection; live gameplay verification was unavailable in this session.
 
-**Test speed** performs a bounded test inside its own window and compares received clicks with sent clicks. It stops if its window loses focus. No benchmark result guarantees the same speed in a different app.
+**Direct mode** sends button-down/up messages to the selected window. It bypasses the global mouse-input queue and reached approximately **10,000 click messages/sec** in the included native receiver test, with sub-millisecond receiver response times. Some games and apps ignore window messages; this is not a claim of 10,000 accepted actions/sec in every application.
 
-## Speed and limits
+**Standard mode** uses Windows `SendInput` for apps that require mouse-input events. It retains the operating system's input path and its limits. That path measured about 2,600 clicks/sec on the development PC. Selecting 10,000 does not remove that limit. There is no driver, elevation bypass, or guaranteed game compatibility.
 
-- Configurable from **1 to 10,000 repeats/sec**.
-- A dedicated worker uses `Stopwatch` deadlines and Windows high-resolution waitable timers. Small native `SendInput` submissions avoid one UI event per scheduled click.
-- Excess scheduling debt is discarded after a long stall; there is no unbounded catch-up burst.
-- Each input submission contains complete button-down/button-up pairs. Failed or partial injection stops the run and attempts to release the button.
-- F8 and hold-key release are checked on the worker, including during the countdown and long intervals. The UI does not have to process a hotkey message first.
-- “Clicks sent” counts input accepted by Windows. Target apps may ignore, merge, or rate-limit simulated clicks. Check `docs/VERIFICATION.md` for measured results and scope.
+The current version intentionally removes the large settings panel, presets, double-click mode, repeat limits, and built-in benchmark screen. It has one small 350×245 client area and an approximately 45 KB executable. It starts idle, runs as a normal user, and saves only speed and mouse button in `HKCU\Software\RapidClick`. The application is unsigned.
 
-Windows prevents input into some elevated or protected applications. RapidClick runs with normal user privileges and does not bypass those protections. If a hotkey is already registered by another app, RapidClick reports the conflict. Close and reopen RapidClick after freeing the F8 stop key. The executable is unsigned, so Windows may show an unknown-publisher or SmartScreen notice.
+## Local build and silent tests
 
-## Build locally
-
-Install the **.NET 10 SDK** on Windows, then run:
+Install [Zig 0.15.2](https://ziglang.org/download/0.15.2/) or run the checksum-verified bootstrap:
 
 ```powershell
+./scripts/bootstrap-native.ps1
 ./scripts/build.ps1
 ```
 
-Or specify an SDK location:
+The build uses Zig's C compiler and Windows libraries; the application itself is C/Win32. Python plus Pillow is used only to verify and capture the small interface. All compilation, testing, and packaging happen locally. No GitHub Actions or cloud builds.
 
-```powershell
-./scripts/build.ps1 -DotnetPath 'C:\path\to\dotnet.exe'
-```
+Default tests use a hidden message-only receiver, produce **no sounds**, and inject **no global mouse or keyboard input**. They verify 1,000 and 10,000/sec, exact counts, button releases, cancellation, slow-target handling, receiver responsiveness, and the packaged interface. Build outputs, the EXE/ZIP, and checksums are in `artifacts/release-v2/`.
 
-This builds the source, runs deterministic behavioral checks, publishes a self-contained single executable, smoke-tests that packaged executable, and creates the EXE, ZIP, and SHA-256 manifest in `artifacts/release/`. All compilation and packaging happen on the local machine; there are no GitHub Actions or cloud builds.
+`./scripts/build.ps1 -GlobalInputProbe` additionally measures the standard input path in a silent, guarded native window. That optional diagnostic temporarily confines the pointer to its own blank target, then restores it. It never targets a game or another application. F8 cancels it.
 
-To include actual mouse-injection tests, run `./scripts/build.ps1 -NativeTests`. These open a dedicated target window and move the pointer temporarily. Do not interact with the desktop during the test. The fixture stops injection if it loses foreground focus and restores the pointer afterwards.
+See [verification evidence](docs/VERIFICATION.md) for measured results and scope. The v1 source remains available under the `v1.0.0` tag; it is no longer built.
 
-## Source map
+## Source
 
-| Path | Purpose |
+| File | Purpose |
 | --- | --- |
-| `src/RapidClick.Core` | Validated settings, worker, timer, and Win32 input |
-| `src/RapidClick` | WPF interface, global hotkeys, settings, safe speed-test window |
-| `tests/RapidClick.Tests` | Scheduling, cancellation, exact counts, and native delivery checks |
-| `scripts/build.ps1` | Local build, verification, and packaging |
-| `docs/VERIFICATION.md` | Release test evidence and limitations |
+| `native/app.c` | Small dark Win32 interface and hotkeys |
+| `native/engine.c` | Direct and standard transports, timing, cancellation |
+| `native/tests.c` | Silent receiver and performance checks |
+| `native/probe.c` | Optional guarded global-input diagnostic |
+| `scripts/build.ps1` | Local build, checks, packaging |
 
-Built with WPF and the .NET base class library, without third-party runtime packages. MIT licensed. RapidClick is an independent project and is not affiliated with Google.
+MIT licensed. Not affiliated with Google.

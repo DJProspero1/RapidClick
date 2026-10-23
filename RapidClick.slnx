@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="src/RapidClick.Core/RapidClick.Core.csproj" />
-  <Project Path="src/RapidClick/RapidClick.csproj" />
-  <Project Path="tests/RapidClick.Tests/RapidClick.Tests.csproj" />
-</Solution>

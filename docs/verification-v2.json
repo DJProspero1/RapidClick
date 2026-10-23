@@ -1,0 +1,53 @@
+{
+  "recordedUtc": "2026-10-23T13:20:35.684724+00:00",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "engine": {
+    "transport": "SendMessageTimeout",
+    "silent": true,
+    "cases": [
+      {
+        "requestedCps": 1000,
+        "received": 3000,
+        "released": 3000,
+        "seconds": 2.999062,
+        "actualCps": 1000.3,
+        "monitorP95Ms": 16.106,
+        "monitorMaxMs": 16.554,
+        "receiverP95Ms": 0.213,
+        "receiverMaxMs": 0.34,
+        "cpuMs": 218.75
+      },
+      {
+        "requestedCps": 10000,
+        "received": 30000,
+        "released": 30000,
+        "seconds": 3.007146,
+        "actualCps": 9976.2,
+        "monitorP95Ms": 16.292,
+        "monitorMaxMs": 16.898,
+        "receiverP95Ms": 0.254,
+        "receiverMaxMs": 0.417,
+        "cpuMs": 656.25
+      }
+    ],
+    "stopMs": 0.241,
+    "failures": 0
+  },
+  "packagedUi": {
+    "passed": true,
+    "silent": true,
+    "mouseOrKeyboardInjection": false,
+    "clientWidth": 350,
+    "clientHeight": 245,
+    "exeBytes": 46592,
+    "workingSetKiB": 14108,
+    "idleCpuMsOver500Ms": 0.0,
+    "checks": [
+      "invalid speed rejected inline",
+      "mouse buttons present",
+      "direct and standard modes present",
+      "stop message handled",
+      "client rendered"
+    ]
+  }
+}
